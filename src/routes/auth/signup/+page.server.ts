@@ -27,23 +27,17 @@ export const actions: Actions = {
         if (password !== confirm_password) {
             throw new Error("Passwords must match")
         }
-        const { data, error } = await authClient.signUp.email({
-            email, // user email address
-            password, // user password -> min 8 characters by default
-            name, // user display name
-            callbackURL: "/dashboard" // a url to redirect to after the user verifies their email (optional)
-        }, {
-            onRequest: (ctx) => {
-                //show loading
+        const res = await auth.api.signUpEmail({
+            body: {
+                email,
+                password,
+                name,
             },
-            onSuccess: (ctx) => {
-                //redirect to the dashboard or sign in page
-                redirect(303, "/auth/signin")
-            },
-            onError: (ctx) => {
-                // display the error message
-                throw new Error(ctx.error.message)
-            },
-    });
+            asResponse: true // returns a response object instead of data
+        })
+        
+        if (res.ok) {
+            redirect(303, "/auth/signin")
+        }
     }
 };
