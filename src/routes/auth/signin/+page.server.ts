@@ -4,28 +4,28 @@ import type { Actions, PageServerLoad } from './$types';
 import { redirect } from '@sveltejs/kit';
 
 export const load = (async () => {
-    return {};
+	return {};
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-    default: async ({ request }) => {
-        type LoginData = {
-            email: string;
-            password: string
-        }
-        const entries = Object.fromEntries(await request.formData()) as LoginData
-        const { email, password } = entries
-       
-        const response = await auth.api.signInEmail({
-            body: {
-                email,
-                password
-            },
-            asResponse: true // returns a response object instead of data
-        });
+	default: async ({ request }) => {
+		type LoginData = {
+			email: string;
+			password: string;
+		};
+		const entries = Object.fromEntries(await request.formData()) as LoginData;
+		const { email, password } = entries;
 
-        if (response.ok) {
-            redirect(303, "/dashboard")
-        }
-    }
+		const response = await auth.api.signInEmail({
+			body: {
+				email,
+				password
+			},
+			asResponse: true // returns a response object instead of data
+		});
+
+		if (response.ok) {
+			redirect(303, '/dashboard');
+		}
+	}
 };

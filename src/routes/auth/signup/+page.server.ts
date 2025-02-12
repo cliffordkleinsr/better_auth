@@ -16,28 +16,28 @@ export const load = (async ({ request }) => {
 
 export const actions: Actions = {
 	default: async ({ request }) => {
-        type RequestData = {
-            name: string;
-            email: string;
-            password: string;
-            confirm_password: string 
-        }
-        const entries = Object.fromEntries(await request.formData()) as RequestData
-        const { email, name, password,  confirm_password } = entries
-        if (password !== confirm_password) {
-            throw new Error("Passwords must match")
-        }
-        const res = await auth.api.signUpEmail({
-            body: {
-                email,
-                password,
-                name,
-            },
-            asResponse: true // returns a response object instead of data
-        })
-        
-        if (res.ok) {
-            redirect(303, "/auth/signin")
-        }
-    }
+		type RequestData = {
+			name: string;
+			email: string;
+			password: string;
+			confirm_password: string;
+		};
+		const entries = Object.fromEntries(await request.formData()) as RequestData;
+		const { email, name, password, confirm_password } = entries;
+		if (password !== confirm_password) {
+			throw new Error('Passwords must match');
+		}
+		const res = await auth.api.signUpEmail({
+			body: {
+				email,
+				password,
+				name
+			},
+			asResponse: true // returns a response object instead of data
+		});
+
+		if (res.ok) {
+			redirect(303, '/auth/signin');
+		}
+	}
 };
